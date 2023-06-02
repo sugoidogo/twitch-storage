@@ -7,6 +7,7 @@ from urllib.request import Request,urlopen,HTTPError
 import json
 from traceback import print_exc
 from subprocess import run
+from sdnotify import SystemdNotifier
 import mimetypes
 
 config=ConfigParser()
@@ -244,5 +245,5 @@ if __name__ == '__main__':
         request_auth()
     bind=(config['network']['ip'],config['network'].getint('port'))
     server=ThreadingHTTPServer(bind,TS)
-    run(['systemd-notify','--ready'])
+    SystemdNotifier().notify('READY=1')
     server.serve_forever()
