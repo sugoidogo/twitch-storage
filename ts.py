@@ -7,6 +7,7 @@ from urllib.request import Request,urlopen,HTTPError
 import json
 from traceback import print_exc
 from subprocess import run
+import mimetypes
 
 config=ConfigParser()
 config['network']={
@@ -156,9 +157,12 @@ class TS(BaseHTTPRequestHandler):
                 self.send_header('Content-Length', len(response))
                 self.end_headers()
                 return self.wfile.write(response)
+            content_type,content_encoding=mimetypes.guess_type(path)
             data=path.read_bytes()
             self.send_response(200)
             self.send_header('Content-Length', len(data))
+            self.send_header('Content-Type',content_type)
+            self.send_header('Content-Encoding',content_encoding)
             self.end_headers()
             self.wfile.write(data)
         except HTTPError as error:
