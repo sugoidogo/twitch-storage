@@ -1,0 +1,12 @@
+[Unit]
+Description=Twitch Storage
+Wants=network-online.target
+Requires=network-online.target
+
+[Service]
+Type=notify
+WorkingDirectory=/opt/twitch-storage
+ExecStart=/usr/bin/env python3 ts.py
+
+[Install]
+WantedBy=default.target
